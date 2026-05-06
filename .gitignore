@@ -1,0 +1,11 @@
+__pycache__/
+fresh/
+*.pyc
+*.log
+*.json
+.env
+env/
+.venv/
+GoogleAds_api_token_Han.py
+Dable_Parm_token.py
+meta_token.py
