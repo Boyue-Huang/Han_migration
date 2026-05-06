@@ -90,7 +90,7 @@ foreach ($job in $jobs) {
     --image $Image `
     --region $Region `
     --service-account $ServiceAccount `
-    --set-env-vars "SCRIPT=$($job.Script)" `
+    --set-env-vars "SCRIPT=$($job.Script),MONITOR_SHEET_ID=1wPXr5FMHpbzhYCIDPpsEvIwIXNoz2Bgm0ozNaHALAQA,MONITOR_EMAIL_TO=bo.huang@omc.com" `
     --set-secrets "GOOGLEADS_TOKEN_PY=han-googleads-token-py:latest,DABLE_TOKEN_PY=han-dable-token-py:latest,META_TOKEN_PY=han-meta-token-py:latest,BQ_MAIN_JSON=han-bq-service-account-main-json:latest,BQ_SHEETS_JSON=han-bq-service-account-sheets-json:latest" `
     --task-timeout 3600 `
     --max-retries 1 `

@@ -23,16 +23,17 @@ Included job scripts:
 
 ```text
 .
-├── Dockerfile
-├── deploy.ps1
-├── requirements.txt
-├── run_job.py
-├── *_daily*.py
-├── GoogleAds_*.py
-├── Dable_*.py
-├── meta_token.py              # ignored, supplied through Secret Manager
-├── GoogleAds_api_token_Han.py # ignored, supplied through Secret Manager
-└── *.json                     # ignored, GCP service account keys
+|-- Dockerfile
+|-- deploy.ps1
+|-- requirements.txt
+|-- run_job.py
+|-- monitoring.py
+|-- *_daily*.py
+|-- GoogleAds_*.py
+|-- Dable_*.py
+|-- meta_token.py              # ignored, supplied through Secret Manager
+|-- GoogleAds_api_token_Han.py # ignored, supplied through Secret Manager
+`-- *.json                     # ignored, GCP service account keys
 ```
 
 ## Requirements
@@ -72,6 +73,42 @@ At runtime, Cloud Run Jobs mount these secrets into environment variables:
 - `BQ_SHEETS_JSON`
 
 `run_job.py` writes those values back to the file names expected by the legacy scripts inside `/app`.
+
+## Monitoring
+
+Each Cloud Run Job writes execution status to this Google Sheet:
+
+```text
+https://docs.google.com/spreadsheets/d/1wPXr5FMHpbzhYCIDPpsEvIwIXNoz2Bgm0ozNaHALAQA/edit
+```
+
+Monitoring is handled in `monitoring.py` and called by `run_job.py`, so every allowlisted ETL script gets the same status tracking.
+
+The workbook uses two worksheets:
+
+- `runs`: one row per execution, including `RUNNING`, `SUCCESS`, or `FAILED`.
+- `latest_status`: one row per Cloud Run Job with the latest known status.
+
+The Google Sheet must be shared with the service account in `eco-carver-356809-a5ccbfde00b9.json`, because Cloud Run uses that JSON file to update the workbook.
+
+Failure email notifications are sent to:
+
+```text
+bo.huang@omc.com
+```
+
+Email uses SMTP environment variables. If `SMTP_HOST` is not set, the job still runs and only skips the email notification.
+
+Supported email variables:
+
+- `SMTP_HOST`
+- `SMTP_PORT`, default `587`
+- `SMTP_USERNAME`
+- `SMTP_PASSWORD`
+- `SMTP_FROM`
+- `SMTP_USE_TLS`, default `true`
+- `MONITOR_EMAIL_TO`, default `bo.huang@omc.com`
+- `MONITOR_EMAIL_ON_FAILURE`, default `true`
 
 ## Local Run
 

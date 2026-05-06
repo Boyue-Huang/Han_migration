@@ -3,6 +3,8 @@ import runpy
 import sys
 from pathlib import Path
 
+import monitoring
+
 
 ALLOWED_SCRIPTS = {
     "Dable_API_daily.py",
@@ -52,9 +54,16 @@ def main() -> int:
         print(f"Script not found: {script_path}", file=sys.stderr)
         return 2
 
-    print(f"Starting {script_name}")
-    runpy.run_path(str(script_path), run_name="__main__")
-    print(f"Finished {script_name}")
+    state = monitoring.start_run(script_name)
+    try:
+        print(f"Starting {script_name}")
+        runpy.run_path(str(script_path), run_name="__main__")
+        print(f"Finished {script_name}")
+    except BaseException as exc:
+        monitoring.finish_failed(state, exc)
+        raise
+    else:
+        monitoring.finish_success(state)
     return 0
 
 
