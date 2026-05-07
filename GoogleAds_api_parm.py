@@ -255,6 +255,37 @@ def sql_google(account_name):
     return sql_google
 
 
+def sql_google_pmax(account_name):
+    sql_google_pmax = f"""
+      SELECT
+        media,
+        channel_type,
+        customer_id,
+        campaign_id,
+        campaign_name,
+        CAST('' AS STRING) AS adgroup_id,
+        CAST('' AS STRING) AS adgroup_name,
+        ad_id,
+        ad_name,
+        date,
+        image_url,
+        preview_image_url,
+        CAST(impressions AS INT64) AS impressions,
+        CAST(clicks AS INT64) AS clicks,
+        CAST(cost AS FLOAT64) AS cost,
+        CAST(conversions AS FLOAT64) AS conversions,
+        CAST(conversion_value AS FLOAT64) AS conversion_value,
+        CAST(0 AS FLOAT64) AS video_thruplay,
+        CAST(0 AS FLOAT64) AS video_views,
+        CAST(0 AS FLOAT64) AS video_p25,
+        CAST(0 AS FLOAT64) AS video_p50,
+        CAST(0 AS FLOAT64) AS video_p75,
+        CAST(0 AS FLOAT64) AS video_p100
+      FROM `eco-carver-356809.api_ads_tables.googleAds_pmax_{account_name}_basic`
+    """
+    return sql_google_pmax
+
+
 def sql_facebook(account_name):
     sql_facebook = f"""
       SELECT  

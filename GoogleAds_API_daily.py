@@ -863,6 +863,7 @@ def union_all_media_table(account_name, project_name, dataset_name, table_creati
 
     sql_facebook = p.sql_facebook(account_name)
     sql_google = p.sql_google(account_name)
+    sql_google_pmax = p.sql_google_pmax(account_name)
     sql_line = p.sql_line(account_name)
     sql_yahooDSP = p.sql_yahooDSP(account_name)
     sql_yahooNative = p.sql_yahooNative(account_name)
@@ -873,6 +874,8 @@ def union_all_media_table(account_name, project_name, dataset_name, table_creati
             sql_queries.append(sql_facebook)
         if 'googleAds_creative_' + account_name in table.table_id:
             sql_queries.append(sql_google)
+        if table.table_id == 'googleAds_pmax_' + account_name + '_basic':
+            sql_queries.append(sql_google_pmax)
         if 'line_report_' + account_name in table.table_id:
             sql_queries.append(sql_line)
         if 'yahooDsp_report_' + account_name in table.table_id:
@@ -982,4 +985,3 @@ if __name__ == "__main__":
 
         print("✅ 處理完成", name)
         print("=========================================")
-

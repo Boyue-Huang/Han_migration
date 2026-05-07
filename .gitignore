@@ -2,6 +2,7 @@ __pycache__/
 fresh/
 *.pyc
 *.log
+*_logs.txt
 *.json
 .env
 env/
